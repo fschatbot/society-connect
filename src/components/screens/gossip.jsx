@@ -1,3 +1,5 @@
+import "../../styles/gossip.css";
+
 function Gossip() {
 	return <>Gossip</>;
 }

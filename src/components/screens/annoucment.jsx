@@ -1,3 +1,5 @@
+import "../../styles/annoucment.css";
+
 function Annoucment() {
 	return <>Annoucment</>;
 }
