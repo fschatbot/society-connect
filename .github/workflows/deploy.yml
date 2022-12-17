@@ -27,7 +27,6 @@ jobs:
       - name: Create local changes
         run: |
           npm clean-install --no-audit --no-fund
-          npm run postinstall
           CI='' npm run build
       - name: Commit files
         run: |
