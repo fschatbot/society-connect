@@ -36,7 +36,7 @@ function Navbar() {
 				</li>
 				<li>
 					<NavLink to="profile" className={navClass}>
-						<img src="https://i.pravatar.cc/150?img=29" alt="Profile Picture" />
+						<img src="https://i.pravatar.cc/150?img=29" alt="profile pic" />
 						Profile
 					</NavLink>
 				</li>

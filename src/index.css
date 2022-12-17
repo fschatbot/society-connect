@@ -5,4 +5,5 @@
 body,
 #root {
 	@apply h-screen flex flex-col;
+	padding-bottom: env(safe-area-inset-bottom) !important;
 }
