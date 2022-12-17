@@ -29,9 +29,9 @@ function Navbar() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="notification" className={navClass}>
+					<NavLink to="notifications" className={navClass}>
 						<Icon icon="ph:bell" />
-						Notification
+						Notifications
 					</NavLink>
 				</li>
 				<li>
