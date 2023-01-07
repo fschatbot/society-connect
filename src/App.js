@@ -5,21 +5,60 @@ import { Annoucment, Chat, Gossip, Login, Notifications, Profile } from "./scree
 
 function App() {
 	return (
+		<Routes>
+			<Route path="/login" element={<Login />} />
+			<Route
+				path="/gossip"
+				element={
+					<PageWrapper>
+						<Gossip />
+					</PageWrapper>
+				}
+			/>
+			<Route
+				path="/annoucment"
+				element={
+					<PageWrapper>
+						<Annoucment />
+					</PageWrapper>
+				}
+			/>
+			<Route
+				path="/chat"
+				element={
+					<PageWrapper>
+						<Chat />
+					</PageWrapper>
+				}
+			/>
+			<Route
+				path="/notifications"
+				element={
+					<PageWrapper>
+						<Notifications />
+					</PageWrapper>
+				}
+			/>
+			<Route
+				path="/profile"
+				element={
+					<PageWrapper>
+						<Profile />
+					</PageWrapper>
+				}
+			/>
+			<Route path="*" element={<Navigate to="/login" replace />} />
+		</Routes>
+	);
+}
+
+const PageWrapper = (props) => {
+	return (
 		<>
-			<div className="page">
-				<Routes>
-					<Route path="/login" element={<Login />} />
-					<Route path="/gossip" element={<Gossip />} />
-					<Route path="/annoucment" element={<Annoucment />} />
-					<Route path="/chat" element={<Chat />} />
-					<Route path="/notifications" element={<Notifications />} />
-					<Route path="/profile" element={<Profile />} />
-					<Route path="*" element={<Navigate to="/login" replace />} />
-				</Routes>
-			</div>
+			<div className="page">{props.children}</div>
 			<Navbar />
 		</>
 	);
-}
+};
 
 export default App;
