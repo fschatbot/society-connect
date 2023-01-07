@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
 import { Annoucment, Chat, Gossip, Login, Notifications, Profile } from "./screens";
 
@@ -55,6 +55,9 @@ function App() {
 const PageWrapper = (props) => {
 	return (
 		<>
+			{/* If not logged in then go back */}
+			{!localStorage.getItem("user") && <Navigate to="/login" replace />}
+			{/* Show the page */}
 			<div className="page">{props.children}</div>
 			<Navbar />
 		</>
