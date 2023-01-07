@@ -16,14 +16,14 @@ function Login() {
 						<input ref={inpRef} placeholder="Ex: B404" />
 						<label>Flat No</label>
 					</div>
-					<p className="error">Invalid building Name</p>
+					<p className="error hidden">Invalid building Name</p>
 				</div>
 				<div className="inputContainer">
 					<div className="inputWrapper">
 						<input id="password" ref={passRef} placeholder=" " type="password" />
 						<label htmlFor="password">Password</label>
 					</div>
-					<p className="error">Invalid Password</p>
+					<p className="error hidden">Invalid Password</p>
 				</div>
 				<div className="w-full flex justify-end">
 					<button>Log In</button>
