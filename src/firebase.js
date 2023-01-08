@@ -22,6 +22,8 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const DB = firebase.database(app);
 
+export default DB;
+
 function LiveGet(_ref, func) {
 	return DB.ref(_ref).on("value", func);
 }
@@ -44,24 +46,7 @@ function Push(_ref, data) {
 	return DB.ref(_ref).push(data);
 }
 
-const accounts_scheme = {
-	username: "", // Username of the person
-	building: "", // EX: B404, C405
-	password: "", // Either plain, base64 or sha256
-	liked: [], // List of post ids that the person liked
-	disliked: [], // List of post ids that the person disliked
-	PFP: "", // URL to the profile picture
-	posts: [], // List of posts made by the person
-};
-
-const post_scheme = {
-	author: "", // Authors post ID
-	title: "", // Title of the post
-	description: "", // Description of the post
-	liked: 0, // Liked by
-	disliked: 0, // Disliked by
-	anonymous: false, // Boleean value
-};
+export { DB, LiveGet, Get, Set, Push, Update, Remove };
 
 async function isLoggedIn() {
 	const ID = localStorage.getItem("user");
@@ -73,5 +58,35 @@ async function isLoggedIn() {
 		.then((snap) => snap.exists());
 }
 
-export default DB;
-export { DB, isLoggedIn, LiveGet, Get, Set, Push, Update, Remove };
+const accounts_schema = {
+	username: "", // Username of the person
+	building: "", // EX: B404, C405
+	password: "", // Either plain, base64 or sha256
+	liked: [], // List of post ids that the person liked
+	disliked: [], // List of post ids that the person disliked
+	PFP: "", // URL to the profile picture
+	posts: [], // List of posts made by the person
+};
+
+const post_schema = {
+	author: "", // Authors post ID
+	title: "", // Title of the post
+	description: "", // Description of the post
+	liked: 0, // Liked by
+	disliked: 0, // Disliked by
+	anonymous: false, // Boleean value
+};
+
+const chat_schema = {
+	messages: [], // Message schema here
+	participants: [], // ID list
+};
+
+const message_schema = {
+	text: "",
+	author: "",
+	postedOn: 0, // Date.now()
+	file: null, // null | file link (Firebase Storage)
+};
+
+export { isLoggedIn };
