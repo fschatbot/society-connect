@@ -24,10 +24,10 @@ button {
 	@apply relative w-full;
 
 	label {
-		@apply top-1/2 left-4 absolute -translate-y-1/2 transition-all px-2;
+		@apply top-1/2 left-4 absolute -translate-y-1/2 transition-all px-2 bg-white;
 	}
 	input:is(:focus, :not(:placeholder-shown)) + label {
-		@apply top-0 text-sm bg-white;
+		@apply top-0 text-sm;
 	}
 
 	input {

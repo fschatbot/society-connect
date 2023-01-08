@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { equalTo, getDatabase, onValue, push, query, ref, remove, set, update } from "firebase/database";
-import { getAnalytics } from "firebase/analytics";
+import firebase from "firebase/app";
+import "firebase/database";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,33 +19,59 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-const DB = new getDatabase();
-
-const refer = (_ref) => ref(DB, _ref);
+const app = firebase.initializeApp(firebaseConfig);
+const DB = firebase.database(app);
 
 function LiveGet(_ref, func) {
-	return onValue(refer(_ref), func);
+	return DB.ref(_ref).on("value", func);
 }
-
 function Get(_ref, func) {
-	return onValue(refer(_ref), func, { onlyOnce: true });
+	// Returns a promise
+	return DB.ref(_ref).once("value");
 }
-
-function Set(_ref, value) {
-	return set(refer(_ref), value);
+function Set(_ref, value, callback = undefined) {
+	return DB.ref(_ref).set(value, callback);
 }
-function Update(_ref, data, _child = null) {
-	return update(refer(_ref), data);
+function Update(_ref, value, callback = undefined) {
+	return DB.ref(_ref).update(value, callback);
 }
 function Remove(_ref) {
-	remove(refer(_ref));
+	// Returns a promise
+	return DB.ref(_ref).remove();
 }
 function Push(_ref, data) {
-	return push(refer(_ref), data);
+	// Returns a promise (works as a ref too)
+	return DB.ref(_ref).push(data);
+}
+
+const accounts_scheme = {
+	username: "", // Username of the person
+	building: "", // EX: B404, C405
+	password: "", // Either plain, base64 or sha256
+	liked: [], // List of post ids that the person liked
+	disliked: [], // List of post ids that the person disliked
+	PFP: "", // URL to the profile picture
+	posts: [], // List of posts made by the person
+};
+
+const post_scheme = {
+	author: "", // Authors post ID
+	title: "", // Title of the post
+	description: "", // Description of the post
+	liked: 0, // Liked by
+	disliked: 0, // Disliked by
+	anonymous: false, // Boleean value
+};
+
+async function isLoggedIn() {
+	const ID = localStorage.getItem("user");
+	// Returns a promise that resolves to false
+	if (!ID) return new Promise((resolve) => resolve(false));
+
+	return DB.ref(`accounts/${ID}`)
+		.once("value")
+		.then((snap) => snap.exists());
 }
 
 export default DB;
-export { refer, LiveGet, Get, Set, Update, Remove, DB, Push };
+export { DB, isLoggedIn, LiveGet, Get, Set, Push, Update, Remove };

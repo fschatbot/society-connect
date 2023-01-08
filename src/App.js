@@ -2,6 +2,8 @@ import "./App.css";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
 import { Annoucment, Chat, Gossip, Login, Notifications, Profile } from "./screens";
+import { isLoggedIn, LoggedInNavigate } from "./firebase";
+import { useEffect } from "react";
 
 function App() {
 	return (
@@ -53,11 +55,14 @@ function App() {
 }
 
 const PageWrapper = (props) => {
+	const navigate = useNavigate();
+	useEffect(() => {
+		// Checked if logged in on first render
+		isLoggedIn().then((LoggedIn) => !LoggedIn && navigate("/login"));
+	}, []);
+
 	return (
 		<>
-			{/* If not logged in then go back */}
-			{!localStorage.getItem("user") && <Navigate to="/login" replace />}
-			{/* Show the page */}
 			<div className="page">{props.children}</div>
 			<Navbar />
 		</>

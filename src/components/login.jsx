@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import "../styles/login.css";
 import logo from "./assets/logo.png";
-import * as fireDB from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { isLoggedIn, DB } from "../firebase";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
 	let inpRef = useRef(null);
@@ -12,25 +12,33 @@ function Login() {
 	const navigate = useNavigate();
 
 	function checkLogin() {
-		fireDB.Get("accounts", (snapshot) => {
-			let found = false;
-			snapshot.forEach((snap) => {
-				let user = snap.val();
-				// console.log(user.building, user.password);
-				if (inpRef.current.value.toLowerCase() == user.building.toLowerCase()) {
-					found = true;
-					if (passRef.current.value == user.password) {
-						// Login was a success
-						localStorage.setItem("user", snap.key);
-						navigate("/gossip");
-					} else {
-						passErr.current.classList.remove("hidden");
-					}
+		DB.ref("accounts")
+			.orderByChild("building")
+			.equalTo(inpRef.current.value)
+			.once("value")
+			.then((snapshot) => {
+				// Checking if the given building is correct
+				if (!snapshot.exists()) return inpErr.current.classList.remove("hidden");
+				else inpErr.current.classList.add("hidden");
+
+				if (snapshot.numChildren() > 1) console.log("There is more than 1 match!");
+
+				// Getting the 1st entry
+				let [snapKey, match] = Object.entries(snapshot.val())[0];
+				// Checking the password is a match
+				if (match.password == passRef.current.value) {
+					localStorage.setItem("user", snapKey);
+					navigate("/gossip");
+				} else {
+					passErr.current.classList.remove("hidden");
 				}
 			});
-			inpErr.current.classList.remove("hidden");
-		});
 	}
+
+	useEffect(() => {
+		// Checked if logged in on first render
+		isLoggedIn().then((LoggedIn) => LoggedIn && navigate("/gossip"));
+	}, []);
 
 	return (
 		<div className="page">
@@ -51,7 +59,7 @@ function Login() {
 						<input id="password" ref={passRef} placeholder=" " type="password" />
 						<label htmlFor="password">Password</label>
 					</div>
-					<p className="error hidden" ref={inpErr}>
+					<p className="error hidden" ref={passErr}>
 						Invalid Password
 					</p>
 				</div>
