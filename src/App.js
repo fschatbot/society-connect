@@ -41,9 +41,10 @@ function App() {
 const PageWrapper = (props) => {
 	const navigate = useNavigate();
 	useEffect(() => {
+		if (!navigate) return;
 		// Checked if logged in on first render
 		isLoggedIn().then((LoggedIn) => !LoggedIn && navigate("/login"));
-	}, []);
+	}, [navigate]);
 
 	return (
 		<>
