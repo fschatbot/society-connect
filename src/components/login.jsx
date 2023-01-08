@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import "../styles/login.css";
 import logo from "./assets/logo.png";
 import { isLoggedIn, DB } from "../firebase";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 	let inpRef = useRef(null);
@@ -26,7 +26,7 @@ function Login() {
 				// Getting the 1st entry
 				let [snapKey, match] = Object.entries(snapshot.val())[0];
 				// Checking the password is a match
-				if (match.password == passRef.current.value) {
+				if (match.password === passRef.current.value) {
 					localStorage.setItem("user", snapKey);
 					navigate("/gossip");
 				} else {

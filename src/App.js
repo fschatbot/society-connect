@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
 import { Annoucment, Chat, Gossip, Login, Notifications, Profile } from "./screens";
-import { isLoggedIn, LoggedInNavigate } from "./firebase";
+import { isLoggedIn } from "./firebase";
 import { useEffect } from "react";
 
 function App() {
