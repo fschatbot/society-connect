@@ -1,36 +1,36 @@
-.page {
+.login_page {
 	@apply flex justify-center items-center flex-col relative gap-1;
 
 	> p {
 		@apply absolute bottom-5 left-1/2 -translate-x-1/2 w-10/12 text-center text-sm;
 	}
-}
 
-button {
-	@apply bg-orange-400 px-4 py-2 rounded text-white font-medium text-xl;
-}
-
-.formBox {
-	@apply w-10/12 flex items-center flex-col gap-4 h-[26rem];
-}
-.inputContainer {
-	@apply w-full;
-
-	p.error {
-		@apply text-red-500 italic text-sm ml-2 mt-0.5;
-	}
-}
-.inputWrapper {
-	@apply relative w-full;
-
-	label {
-		@apply top-1/2 left-4 absolute -translate-y-1/2 transition-all px-2 bg-white;
-	}
-	input:is(:focus, :not(:placeholder-shown)) + label {
-		@apply top-0 text-sm;
+	button {
+		@apply bg-orange-400 px-4 py-2 rounded text-white font-medium text-xl;
 	}
 
-	input {
-		@apply border px-4 py-2 rounded border-slate-800 w-full outline-none;
+	.formBox {
+		@apply w-10/12 flex items-center flex-col gap-4 h-[26rem];
+	}
+	.inputContainer {
+		@apply w-full;
+
+		p.error {
+			@apply text-red-500 italic text-sm ml-2 mt-0.5;
+		}
+	}
+	.inputWrapper {
+		@apply relative w-full;
+
+		label {
+			@apply top-1/2 left-4 absolute -translate-y-1/2 transition-all px-2 bg-white;
+		}
+		input:is(:focus, :not(:placeholder-shown)) + label {
+			@apply top-0 text-sm;
+		}
+
+		input {
+			@apply border px-4 py-2 rounded border-slate-800 w-full outline-none;
+		}
 	}
 }

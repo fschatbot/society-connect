@@ -36,12 +36,13 @@ function Login() {
 	}
 
 	useEffect(() => {
+		if (!navigate) return;
 		// Checked if logged in on first render
 		isLoggedIn().then((LoggedIn) => LoggedIn && navigate("/gossip"));
-	}, []);
+	}, [navigate]);
 
 	return (
-		<div className="page">
+		<div className="login_page">
 			<div className="formBox">
 				<img src={logo} className="h-20" alt="Page Logo" />
 				<h1 className="text-4xl font-bold">Society Connect</h1>
