@@ -14,24 +14,10 @@ function Navbar() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/annoucment" className={navClass}>
-						{/* <Icon icon="mdi:bullhorn" /> */}
-						{/* <Icon icon="circum:bullhorn" /> */}
-						<Icon icon="carbon:bullhorn" />
-						Annoucment
-					</NavLink>
-				</li>
-				<li>
 					<NavLink to="/chat" className={navClass}>
 						{/* <Icon icon="mingcute:chat-1-line" /> */}
 						<Icon icon="cil:chat-bubble" />
-						Chatting
-					</NavLink>
-				</li>
-				<li>
-					<NavLink to="/notifications" className={navClass}>
-						<Icon icon="ph:bell" />
-						Notifications
+						Messages
 					</NavLink>
 				</li>
 				<li>

@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
-import { Annoucment, Chat, Gossip, Login, Notifications, Profile } from "./screens";
+import { Chat, Gossip, Login, Profile } from "./screens";
 import { isLoggedIn } from "./firebase";
 import { useEffect } from "react";
 
@@ -18,26 +18,10 @@ function App() {
 				}
 			/>
 			<Route
-				path="/annoucment"
-				element={
-					<PageWrapper>
-						<Annoucment />
-					</PageWrapper>
-				}
-			/>
-			<Route
 				path="/chat"
 				element={
 					<PageWrapper>
 						<Chat />
-					</PageWrapper>
-				}
-			/>
-			<Route
-				path="/notifications"
-				element={
-					<PageWrapper>
-						<Notifications />
 					</PageWrapper>
 				}
 			/>
