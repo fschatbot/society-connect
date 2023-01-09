@@ -53,9 +53,18 @@ async function isLoggedIn() {
 	// Returns a promise that resolves to false
 	if (!ID) return new Promise((resolve) => resolve(false));
 
-	return DB.ref(`accounts/${ID}`)
-		.once("value")
-		.then((snap) => snap.exists());
+	return Get(`accounts/${ID}`).then((snap) => snap.exists());
+}
+
+async function currentAccount() {
+	// Returns the current logged in accounts data
+
+	return isLoggedIn().then((loggedIn) => {
+		if (!loggedIn) return accounts_schema;
+
+		const ID = localStorage.getItem("user");
+		return Get(`accounts/${ID}`).then((snap) => snap.val());
+	});
 }
 
 const accounts_schema = {
@@ -66,6 +75,7 @@ const accounts_schema = {
 	disliked: [], // List of post ids that the person disliked
 	PFP: "", // URL to the profile picture
 	posts: [], // List of posts made by the person
+	bio: "", // Short bio that is to be displayed
 };
 
 const post_schema = {
@@ -89,4 +99,4 @@ const message_schema = {
 	file: null, // null | file link (Firebase Storage)
 };
 
-export { isLoggedIn };
+export { isLoggedIn, currentAccount };
