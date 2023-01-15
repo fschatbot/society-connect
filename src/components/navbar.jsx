@@ -1,9 +1,15 @@
 import "../styles/navbar.css";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { currentAccount } from "../firebase";
 
 function Navbar() {
 	let navClass = ({ isActive }) => (isActive ? "active" : null);
+	const [PFP, setPFP] = useState("https://i.pravatar.cc/150?img=29");
+	useEffect(() => {
+		currentAccount().then((acc) => setPFP(acc.PFP));
+	}, []);
 	return (
 		<nav>
 			<ul>
@@ -22,7 +28,7 @@ function Navbar() {
 				</li>
 				<li>
 					<NavLink to="/profile" className={navClass}>
-						<img src="https://i.pravatar.cc/150?img=29" alt="profile pic" />
+						<img src={PFP} alt="profile pic" />
 						Profile
 					</NavLink>
 				</li>
