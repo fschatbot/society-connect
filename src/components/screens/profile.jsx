@@ -2,21 +2,34 @@ import "../../styles/profile.css";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { PostScroll } from "./gossip";
-import { currentAccount } from "../../firebase";
+import { currentAccount, Get } from "../../firebase";
+import { useParams, Link, useLocation } from "react-router-dom";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
-function Profile() {
+function Profile(props) {
 	let [info, setInfo] = useState(null);
+	const { id } = useParams();
+	const [shareUrl, setShareUrl] = useState(window.location.href);
+	// TODO: FIX THE shareUrl
 
 	useEffect(() => {
-		currentAccount().then(setInfo);
-	}, []);
+		Get(`accounts/${id || localStorage.user}`)
+			.then((snapshot) => {
+				if (snapshot.exists()) return snapshot;
+				setShareUrl(shareUrl + id);
+				return currentAccount();
+			})
+			.then((snapshot) => setInfo(snapshot.val()));
+	}, [id]);
 
 	return (
 		<>
 			<div className="profile_topBlock">
-				<div className="profile_icon top-5 left-5">
-					<Icon icon="material-symbols:share-outline" />
-				</div>
+				<CopyToClipboard text={shareUrl}>
+					<div className="profile_icon top-5 left-5" to={shareUrl}>
+						<Icon icon="material-symbols:share-outline" />
+					</div>
+				</CopyToClipboard>
 				<div className="profile_img" style={{ "--pfp": `url("${info?.PFP}")` }}></div>
 				<div className="profile_icon right-5 bottom-0 translate-y-1/2">
 					<Icon icon="fluent:edit-28-regular" />
