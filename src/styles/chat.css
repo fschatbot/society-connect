@@ -1,0 +1,60 @@
+.ChatNav {
+	@apply p-6 h-16;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
+	/* backdrop-filter: blur(5px); */
+	/* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	*/
+	h1 {
+		@apply text-3xl font-bold;
+	}
+}
+.searchBox {
+	@apply flex flex-row mx-auto overflow-hidden relative my-6
+	w-9/12;
+	input {
+		@apply px-3 pr-6 py-2 w-full 
+		rounded-md border-b-2 outline-none focus:border-b-orange-500;
+	}
+	svg {
+		@apply absolute right-1 top-1/2 -translate-y-1/2;
+	}
+}
+.chatList {
+	@apply flex flex-col w-10/12 mx-auto;
+
+	.bigChat {
+		@apply bg-gray-200 p-4 rounded-md mb-4
+		flex flex-row justify-between items-center;
+		.chatData {
+			@apply flex flex-row items-center gap-3
+			text-2xl;
+		}
+		svg {
+			@apply w-12 h-12;
+		}
+	}
+
+	.chat {
+		@apply flex flex-row justify-between items-center;
+		.chatData {
+			@apply flex flex-row items-center gap-3;
+			.PFP {
+				@apply w-12 h-12 rounded-xl;
+			}
+			h1 {
+				@apply text-2xl;
+			}
+			h2 {
+				@apply font-thin italic text-gray-500;
+			}
+		}
+		svg {
+			@apply w-12 h-12;
+		}
+		& + .chat {
+			@apply border-t-2;
+			border-image: linear-gradient(to right, transparent 10%, #ddd 10% 90%, transparent 90%) 100% 1;
+		}
+	}
+}
