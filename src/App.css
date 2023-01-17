@@ -1,3 +1,4 @@
 .page {
-	@apply h-full w-full;
+	@apply flex-grow w-full overflow-y-auto
+	flex flex-col;
 }
