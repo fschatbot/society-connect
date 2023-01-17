@@ -2,12 +2,12 @@ import "../../styles/profile.css";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { PostScroll } from "./gossip";
-import { currentAccount, Get } from "../../firebase";
+import { accounts_schema, currentAccount, Get } from "../../firebase";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Profile(props) {
-	let [info, setInfo] = useState(null);
+	let [info, setInfo] = useState(accounts_schema);
 	const { id } = useParams();
 	const [shareUrl, setShareUrl] = useState(window.location.href);
 	// TODO: FIX THE shareUrl

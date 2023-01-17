@@ -18,7 +18,7 @@ function Gossip() {
 	);
 }
 
-function PostScroll({ filter }) {
+function PostScroll({ filter = () => !0 }) {
 	let [posts, setPosts] = useState([]);
 	let [HasMore, setHasMore] = useState(true);
 	let [reactions, setReactions] = useState({ liked: [], disliked: [] });
@@ -45,7 +45,7 @@ function PostScroll({ filter }) {
 					let post = snapChild.val();
 					post.id = snapChild.key;
 					post.authorPFP = "https://i.pravatar.cc/150?img=29";
-					data.push(post);
+					if (filter(post)) data.push(post);
 				});
 				// Add the new posts to the old posts
 				setPosts(data);
