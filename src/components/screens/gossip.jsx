@@ -4,7 +4,7 @@ import { currentAccount, DB } from "../../firebase";
 import firebase from "firebase/app";
 import { Icon } from "@iconify/react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
-import { InfinitySpin } from "react-loader-spinner";
+import BeatLoader from "react-spinners/BeatLoader";
 
 function Gossip() {
 	return (
@@ -163,7 +163,7 @@ function PostScroll({ filter = () => !0 }) {
 			{posts.map(Post)}
 			{(loading || HasMore) && (
 				<div ref={sentryRef}>
-					<InfinitySpin color="#36d7b7" className="loader" />
+					<BeatLoader color="#36d7b7" size={10} />
 				</div>
 			)}
 		</div>
