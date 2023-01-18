@@ -42,7 +42,7 @@ function Login() {
 	}, [navigate]);
 
 	return (
-		<div className="login_page">
+		<div className="login_page" style={{ height: "100%" }}>
 			<div className="formBox">
 				<img src={logo} className="h-20" alt="Page Logo" />
 				<h1 className="text-4xl font-bold">Society Connect</h1>
