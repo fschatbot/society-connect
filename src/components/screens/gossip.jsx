@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/gossip.css";
 import { currentAccount, DB } from "../../firebase";
 import firebase from "firebase/app";
-
 import { Icon } from "@iconify/react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import useInfiniteScroll from "react-infinite-scroll-hook";
+import { InfinitySpin } from "react-loader-spinner";
 
 function Gossip() {
 	return (
@@ -21,6 +21,7 @@ function Gossip() {
 function PostScroll({ filter = () => !0 }) {
 	let [posts, setPosts] = useState([]);
 	let [HasMore, setHasMore] = useState(true);
+	const [loading, setLoading] = useState(false);
 	let [reactions, setReactions] = useState({ liked: [], disliked: [] });
 
 	useEffect(() => {
@@ -31,34 +32,6 @@ function PostScroll({ filter = () => !0 }) {
 	}, []);
 
 	// Fetching data functions
-	function fetchData() {
-		// Fetch the first 10 posts from firebase DB
-		// DB.ref('/posts').limitToFirst(10).once('value', (snapshot) => {
-		// Fetch the next 10 posts from firebase DB
-		return DB.ref("posts")
-			.limitToFirst(posts.length + 10)
-			.once("value")
-			.then((snap) => {
-				let data = [];
-				const previousLength = posts.length;
-				snap.forEach((snapChild) => {
-					let post = snapChild.val();
-					post.id = snapChild.key;
-					post.authorPFP = "https://i.pravatar.cc/150?img=29";
-					if (filter(post)) data.push(post);
-				});
-				// Add the new posts to the old posts
-				setPosts(data);
-				// Check if more posts are available
-				if (previousLength === data.length) setHasMore(false);
-			});
-	}
-
-	const fetchDataRef = useRef(fetchData);
-
-	useEffect(() => {
-		fetchDataRef.current();
-	}, [fetchDataRef]);
 
 	// Liking and disliking a post function
 	function likePost(id) {
@@ -122,47 +95,78 @@ function PostScroll({ filter = () => !0 }) {
 		setReactions({ ...updatedReactions });
 	}
 
-	return (
-		<InfiniteScroll
-			dataLength={posts.length} //This is important field to render the next data
-			next={fetchData}
-			hasMore={HasMore}
-			loader={<h4>Loading...</h4>}
-			endMessage={
-				<p style={{ textAlign: "center" }}>
-					<b>Yay! You have seen it all</b>
-				</p>
-			}>
-			{posts.map((post) => {
-				return (
-					<div className="post" key={post.id}>
-						{/* POST IMAGE */}
-						<img className="post__image" src={post.image} alt="" />
-						<div className="bar">
-							<div className="title">
-								<img className="PFP" src={post.authorPFP} alt="" />
-								<h1>{post.title}</h1>
-							</div>
-							<div className="reactions">
-								<Icon
-									icon={reactions.liked.includes(post.id) ? "ph:heart-fill" : "ph:heart"}
-									color={reactions.liked.includes(post.id) ? "rgb(229 66 148)" : "rgb(48 48 191)"}
-									onClick={() => likePost(post.id)}
-								/>
-								{post.liked}
-								<Icon
-									icon={reactions.disliked.includes(post.id) ? "fluent:thumb-dislike-16-filled" : "fluent:thumb-dislike-16-regular"}
-									color={reactions.disliked.includes(post.id) ? "#98571b" : "rgb(48 48 191)"}
-									onClick={() => dislikePost(post.id)}
-								/>
-								{post.disliked}
-							</div>
-						</div>
-						<p className="description">{post.description}</p>
+	// Logic for infinite scroll
+	const [sentryRef] = useInfiniteScroll({
+		loading,
+		hasNextPage: HasMore,
+		onLoadMore: fetchData,
+		rootMargin: "0px 0px 400px 0px",
+	});
+
+	function fetchData() {
+		console.log("Fetching data");
+		setLoading(true);
+		// Fetch the next 10 posts from firebase DB
+		return DB.ref("posts")
+			.limitToFirst(posts.length + 10)
+			.once("value")
+			.then((snap) => {
+				let data = [];
+				const previousLength = posts.length;
+				snap.forEach((snapChild) => {
+					let post = snapChild.val();
+					post.id = snapChild.key;
+					post.authorPFP = "https://i.pravatar.cc/150?img=29";
+					if (filter(post)) data.push(post);
+				});
+				console.log(data);
+				// Add the new posts to the old posts
+				setPosts(data);
+				// Check if more posts are available
+				if (previousLength === data.length) setHasMore(false);
+				setLoading(false);
+			});
+	}
+
+	function Post(post) {
+		return (
+			<div className="post" key={post.id}>
+				{/* POST IMAGE */}
+				<img className="post__image" src={post.image} alt="" />
+				<div className="bar">
+					<div className="title">
+						<img className="PFP" src={post.authorPFP} alt="" />
+						<h1>{post.title}</h1>
 					</div>
-				);
-			})}
-		</InfiniteScroll>
+					<div className="reactions">
+						<Icon
+							icon={reactions.liked.includes(post.id) ? "ph:heart-fill" : "ph:heart"}
+							color={reactions.liked.includes(post.id) ? "rgb(229 66 148)" : "rgb(48 48 191)"}
+							onClick={() => likePost(post.id)}
+						/>
+						{post.liked}
+						<Icon
+							icon={reactions.disliked.includes(post.id) ? "fluent:thumb-dislike-16-filled" : "fluent:thumb-dislike-16-regular"}
+							color={reactions.disliked.includes(post.id) ? "#98571b" : "rgb(48 48 191)"}
+							onClick={() => dislikePost(post.id)}
+						/>
+						{post.disliked}
+					</div>
+				</div>
+				<p className="description">{post.description}</p>
+			</div>
+		);
+	}
+
+	return (
+		<div className="postList">
+			{posts.map(Post)}
+			{(loading || HasMore) && (
+				<div ref={sentryRef}>
+					<InfinitySpin color="#36d7b7" className="loader" />
+				</div>
+			)}
+		</div>
 	);
 }
 

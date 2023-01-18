@@ -29,11 +29,8 @@
 		@apply content-[''] block w-4 bg-gray-600 rounded-sm;
 	}
 }
-.infinite-scroll-component__outerdiv {
-	@apply max-h-full mt-2;
-	.infinite-scroll-component {
-		@apply flex flex-col gap-4;
-	}
+.postList {
+	@apply flex flex-col gap-4 my-2 items-center;
 }
 
 .gossipNav {
