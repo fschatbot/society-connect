@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
-import { Chat, Gossip, Login, Profile } from "./screens";
+import { Chat, Gossip, Login, Profile, ChatPage } from "./screens";
 import { isLoggedIn } from "./firebase";
 import { useEffect } from "react";
 
@@ -17,6 +17,7 @@ function App() {
 					</PageWrapper>
 				}
 			/>
+			<Route path="/chat/:id" element={<ChatPage />} />
 			<Route
 				path="/chat"
 				element={
