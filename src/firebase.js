@@ -66,6 +66,7 @@ async function currentAccount() {
 		return Get(`accounts/${ID}`).then((snap) => snap.val());
 	});
 }
+export { isLoggedIn, currentAccount };
 
 const accounts_schema = {
 	username: "", // Username of the person
@@ -79,12 +80,13 @@ const accounts_schema = {
 };
 
 const post_schema = {
-	author: "", // Authors post ID
+	author: "", // Author's post ID
 	title: "", // Title of the post
 	description: "", // Description of the post
 	liked: 0, // Liked by
 	disliked: 0, // Disliked by
 	anonymous: false, // Boleean value
+	image: "", // URL to the image
 };
 
 const chat_schema = {
@@ -99,4 +101,4 @@ const message_schema = {
 	file: null, // null | file link (Firebase Storage)
 };
 
-export { isLoggedIn, currentAccount };
+export { message_schema, chat_schema, post_schema, accounts_schema };
