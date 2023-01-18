@@ -39,14 +39,22 @@ function ChatList() {
 	const [accounts, setAccounts] = useState([]);
 
 	useEffect(() => {
-		Get("accounts").then((snap) => setAccounts(Object.values(snap.val())));
+		Get("accounts").then((snap) => {
+			let data = [];
+			snap.forEach((snapChild) => {
+				const account = snapChild.val();
+				account.id = snapChild.key;
+				data.push(account);
+			});
+			setAccounts(data);
+		});
 	}, []);
 
 	return accounts.map((account) => {
 		return (
-			<Link to={`/chat/${account.username}`} className="chat" key={account.username}>
+			<Link to={`/chat/${account.id}`} className="chat" key={account.id}>
 				<div className="chatData">
-					<img className="PFP" src={account.PFP} />
+					<img className="PFP" src={account.PFP} alt="profile PFP" />
 					<div className="nameWrapper">
 						<h1>{account.username}</h1>
 						<h2>Last Message...</h2>
