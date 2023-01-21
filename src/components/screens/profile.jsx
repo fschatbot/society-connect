@@ -1,26 +1,33 @@
 import "../../styles/profile.css";
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PostScroll } from "./gossip";
 import { accounts_schema, currentAccount, Get } from "../../firebase";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Profile(props) {
 	let [info, setInfo] = useState(accounts_schema);
 	const { id } = useParams();
 	const [shareUrl, setShareUrl] = useState(window.location.href);
-	// TODO: FIX THE shareUrl
+	const shareUrlRef = useRef(setShareUrl);
 
 	useEffect(() => {
 		Get(`accounts/${id || localStorage.user}`)
 			.then((snapshot) => {
+				let url = window.location.origin + window.location.pathname + `#/profile/${snapshot.key}`;
+				shareUrlRef.current(url);
 				if (snapshot.exists()) return snapshot;
-				setShareUrl(shareUrl + id);
 				return currentAccount();
 			})
-			.then((snapshot) => setInfo(snapshot.val()));
-	}, [id]);
+			.then((snapshot) => {
+				const data = snapshot.val();
+				data.id = snapshot.key;
+				setInfo(data);
+			});
+	}, [id, shareUrlRef]);
+
+	if (!info.id) return <></>;
 
 	return (
 		<>
