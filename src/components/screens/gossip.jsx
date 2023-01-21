@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "../../styles/gossip.css";
-import { currentAccount, DB } from "../../firebase";
+import { currentAccount, DB, Get } from "../../firebase";
 import firebase from "firebase/app";
 import { Icon } from "@iconify/react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import BeatLoader from "react-spinners/BeatLoader";
+import { Link } from "react-router-dom";
 
 function Gossip() {
 	return (
@@ -115,29 +116,36 @@ function PostScroll({ filter = () => !0 }) {
 				const previousLength = posts.length;
 				snap.forEach((snapChild) => {
 					let post = snapChild.val();
-					post.id = snapChild.key;
-					post.authorPFP = "https://i.pravatar.cc/150?img=29";
-					if (filter(post)) data.push(post);
+					if (!filter(post)) return;
+
+					data.push(
+						Get(`accounts/${snapChild.val().author}/PFP`).then((pfp) => {
+							post.id = snapChild.key;
+							post.authorPFP = pfp.val();
+							return post;
+						})
+					);
 				});
-				console.log(data);
-				// Add the new posts to the old posts
-				setPosts(data);
-				// Check if more posts are available
-				if (previousLength === data.length) setHasMore(false);
-				setLoading(false);
+				Promise.all(data).then((new_posts) => {
+					// Get the data returned from the promises
+					console.log(new_posts);
+					setPosts(new_posts);
+					if (previousLength === new_posts.length || new_posts.length % 10 !== 0) setHasMore(false);
+					setLoading(false);
+				});
 			});
 	}
 
 	function Post(post) {
 		return (
-			<div className="post" key={post.id}>
+			<div className="post" key={post.id} postdata={JSON.stringify(post)}>
 				{/* POST IMAGE */}
 				<img className="post__image" src={post.image} alt="" />
 				<div className="bar">
-					<div className="title">
+					<Link className="title" to={`/profile/${post.author}`}>
 						<img className="PFP" src={post.authorPFP} alt="" />
 						<h1>{post.title}</h1>
-					</div>
+					</Link>
 					<div className="reactions">
 						<Icon
 							icon={reactions.liked.includes(post.id) ? "ph:heart-fill" : "ph:heart"}
