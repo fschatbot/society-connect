@@ -95,10 +95,10 @@ const chat_schema = {
 };
 
 const message_schema = {
-	text: "",
+	message: "",
 	author: "",
-	postedOn: 0, // Date.now()
-	file: null, // null | file link (Firebase Storage)
+	timestamp: 0, // Date.now()
+	file: "", // null | file link (Firebase Storage)
 };
 
 export { message_schema, chat_schema, post_schema, accounts_schema };

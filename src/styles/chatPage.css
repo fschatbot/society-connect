@@ -1,0 +1,90 @@
+.chatPage {
+	@apply flex flex-col h-screen;
+	nav {
+		@apply flex flex-row gap-4 items-center
+		border-b px-4 py-2;
+
+		.account {
+			@apply flex flex-row gap-2 items-center
+			text-2xl font-medium;
+		}
+		.PFP {
+			background: var(--pfp) center / 50%;
+			@apply w-12 h-12 border bg-contain rounded-full;
+		}
+	}
+	.messages {
+		@apply flex-grow relative p-2
+		flex flex-col gap-2 overflow-y-auto;
+
+		.firstMessageHeader {
+			@apply text-xl font-bold text-gray-600 w-full text-center
+			absolute bottom-5;
+		}
+
+		.messageBox {
+			@apply w-56 rounded text-white p-1 overflow-hidden
+			relative;
+
+			.timestamp {
+				@apply text-xs text-gray-200 font-medium
+				absolute bottom-[6px] right-2;
+			}
+
+			.img {
+				@apply rounded-md w-full bg-center bg-cover bg-no-repeat bg-black;
+				background-image: var(--url);
+				padding-top: min(var(--ratio, 100%), 100%);
+			}
+
+			img {
+				@apply rounded-md;
+			}
+
+			p {
+				@apply break-words mb-4 ml-1;
+			}
+		}
+		.messageBox.self {
+			@apply bg-green-500 ml-auto;
+		}
+		.messageBox.other {
+			@apply bg-gray-500;
+		}
+
+		.messageBox.preview::after {
+			@apply content-[''] w-8 h-96 absolute -left-5 top-0 blur-lg opacity-60 bg-white
+			animate-[login\-blur_3s_infinite] -m-5 origin-top;
+		}
+	}
+	.messageInput {
+		@apply border-t px-4 py-2
+		flex flex-row gap-2;
+		input {
+			@apply rounded-full border flex-grow px-4 py-1;
+		}
+		button {
+			@apply w-8 h-8 aspect-square rounded-2xl text-white
+			flex justify-center items-center;
+
+			svg {
+				@apply h-[18px] w-[18px];
+			}
+		}
+		.addFile {
+			@apply border border-gray-500 text-gray-500;
+		}
+		.send {
+			@apply bg-green-500;
+		}
+	}
+}
+
+@keyframes login-blur {
+	from {
+		transform: translate(0) rotate(45deg);
+	}
+	to {
+		transform: translateX(460px) rotate(45deg);
+	}
+}
