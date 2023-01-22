@@ -20,10 +20,10 @@ function Gossip() {
 }
 
 function PostScroll({ filter = () => !0 }) {
-	let [posts, setPosts] = useState([]);
-	let [HasMore, setHasMore] = useState(true);
+	const [posts, setPosts] = useState([]);
+	const [HasMore, setHasMore] = useState(true);
 	const [loading, setLoading] = useState(false);
-	let [reactions, setReactions] = useState({ liked: [], disliked: [] });
+	const [reactions, setReactions] = useState({ liked: [], disliked: [] });
 
 	useEffect(() => {
 		currentAccount().then((user) => {

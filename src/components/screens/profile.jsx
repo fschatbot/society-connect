@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Profile(props) {
-	let [info, setInfo] = useState(accounts_schema);
+	const [info, setInfo] = useState(accounts_schema);
 	const { id } = useParams();
 	const [shareUrl, setShareUrl] = useState(window.location.href);
 	const shareUrlRef = useRef(setShareUrl);
