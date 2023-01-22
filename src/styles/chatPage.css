@@ -15,7 +15,7 @@
 	}
 	.messages {
 		@apply flex-grow relative p-2
-		flex flex-col gap-2 overflow-y-auto;
+		overflow-x-hidden;
 
 		.firstMessageHeader {
 			@apply text-xl font-bold text-gray-600 w-full text-center
@@ -23,7 +23,7 @@
 		}
 
 		.messageBox {
-			@apply w-56 rounded text-white p-1 overflow-hidden
+			@apply w-56 rounded text-white p-1 overflow-hidden mb-2
 			relative;
 
 			.timestamp {
@@ -53,8 +53,9 @@
 		}
 
 		.messageBox.preview::after {
-			@apply content-[''] w-8 h-96 absolute -left-5 top-0 blur-lg opacity-60 bg-white
-			animate-[login\-blur_3s_infinite] -m-5 origin-top;
+			@apply content-[''] w-8 absolute -left-5 top-0 blur-lg opacity-60 bg-white
+			animate-[login-blur_3s_infinite] -m-5 origin-top;
+			height: calc(100% + 2 * 1.25rem);
 		}
 	}
 	.messageInput {
@@ -82,9 +83,9 @@
 
 @keyframes login-blur {
 	from {
-		transform: translate(0) rotate(45deg);
+		transform: translate(0);
 	}
 	to {
-		transform: translateX(460px) rotate(45deg);
+		transform: translateX(460px);
 	}
 }

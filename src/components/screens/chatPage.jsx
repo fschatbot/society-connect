@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { accounts_schema, Get, LiveGet, message_schema, Push } from "../../firebase";
+import { accounts_schema, Get, LiveGet, message_schema, Push, Set, storage, storageRef } from "../../firebase";
 import "../../styles/chatPage.css";
 import { Icon } from "@iconify/react";
 
@@ -10,7 +10,12 @@ function ChatPage() {
 	const [newChat, setNewChat] = useState(false);
 	const messageInput = useRef();
 	const [currMessage, setCurrMessage] = useState("");
-	const [currFile, setCurrFile] = useState(null);
+	const [currFile, setCurrFile] = useState({
+		url: "",
+		height: 0,
+		width: 0,
+	});
+	const [file, setFile] = useState(null);
 	const { id: participant } = useParams();
 	const navigate = useNavigate();
 	let participants = [localStorage.user, participant].sort();
@@ -49,18 +54,35 @@ function ChatPage() {
 
 	// Sending the messages
 	const sendMessage = async () => {
-		const message = messageInput.current.value;
-		if (message === "") return;
+		if (currMessage === "" && !currFile.url) return;
 		messageInput.current.value = "";
 
 		let data = message_schema;
-		data.message = message;
+		data.message = currMessage;
 		data.author = localStorage.user;
 		data.timestamp = Date.now();
+		// Set a shiny gray file url temporarily
+		if (currFile.url) data.file = { url: "https://singlecolorimage.com/get/33fd8f/1600x900", height: 900, width: 1600 };
 
-		Push(chatLocation, data).then(() => {
+		Push(chatLocation, data).then((snap) => {
 			setCurrMessage("");
-			setCurrFile(null);
+			setCurrFile({});
+
+			if (currFile.url) {
+				console.log("Uploading to the server...");
+				const imageRef = storageRef.child(`${participants[0]}|${participants[1]}/${snap.key}`);
+				imageRef.put(file).then(() => {
+					console.log("File Uploaded to the server!");
+					imageRef.getDownloadURL().then((url) => {
+						console.log("File url obtained!");
+						Set(`${chatLocation}/${snap.key}/file`, {
+							url: url,
+							height: currFile.height,
+							width: currFile.width,
+						});
+					});
+				});
+			}
 		});
 	};
 
@@ -81,20 +103,26 @@ function ChatPage() {
 		fileInput.onchange = (e) => {
 			let file = e.target.files[0];
 			if (!file) return;
+			if (file.size > 10_000_000) return alert("File too large! (Max 10MB)");
+			if (!file.type.includes("image")) return alert("File is not an image!");
+			setFile(file);
+			console.log("File validated");
+
 			let reader = new FileReader();
 			reader.onload = (e) => {
-				setCurrFile(e.target.result);
+				console.log("File read!");
+
+				let img = new Image();
+				img.onload = () => {
+					console.log("Image dimensions aquired!");
+					setCurrFile({ url: e.target.result, height: img.height, width: img.width });
+				};
+				img.src = e.target.result;
 			};
 			reader.readAsDataURL(file);
 		};
 		fileInput.click();
 	}
-
-	let currTime = new Date().toLocaleTimeString("en-US", {
-		hour: "numeric",
-		minute: "numeric",
-		hour12: true,
-	});
 
 	return (
 		<div className="chatPage">
@@ -108,11 +136,11 @@ function ChatPage() {
 			<div className="messages">
 				{newChat && <h1 className="firstMessageHeader">Send the first message!! 😊</h1>}
 
-				{messages.map((message) => (
-					<Message message={message} />
-				))}
+				{messages.map((data) => {
+					return <Message message={data} key={data.id} />;
+				})}
 
-				{(currFile || currMessage) && <Message message={{ message: currMessage, timestamp: Date.now(), file: currFile, author: localStorage.user }} preview={true} />}
+				{(currFile.url || currMessage) && <Message message={{ message: currMessage, timestamp: Date.now(), file: currFile, author: localStorage.user }} preview={true} />}
 			</div>
 			<div className="messageInput">
 				<button className="addFile" onClick={addFile}>
@@ -134,19 +162,9 @@ function Message({ message, preview }) {
 		hour12: true,
 	});
 
-	const [ratio, setRatio] = useState(100);
-
-	// Get the image's aspect ratio
-	if (message.file) {
-		let img = new Image();
-		img.onload = () => setRatio(img.height / img.width);
-		img.src = message.file;
-	}
-
 	return (
-		<div key={message.id} className={`messageBox ${message.author === localStorage.user ? "self" : "other"} ${preview && "preview"}`}>
-			{message.file && <div className="img" style={{ "--url": `url("${message.file}")`, "--ratio": `${ratio * 100}%` }} />}
-			{/* {message.file && <img src={message.file} />} */}
+		<div key={message.id} className={`messageBox ${message.author === localStorage.user ? "self" : "other"} ${preview ? "preview" : ""}`}>
+			{message.file.url && <div className="img" style={{ "--url": `url("${message.file.url}")`, "--ratio": `${(message.file.height / message.file.width) * 100}%` }} />}
 			{message.message && <p>{message.message}</p>}
 			<span className="timestamp">{time}</span>
 		</div>

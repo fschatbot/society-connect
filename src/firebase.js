@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/app";
 import "firebase/database";
+import "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,8 +22,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const DB = firebase.database(app);
+const storage = firebase.storage(app);
+const storageRef = storage.ref();
 
-export default DB;
+export { DB, storage, storageRef };
 
 function LiveGet(_ref, func) {
 	return DB.ref(_ref).on("value", func);
@@ -46,7 +49,7 @@ function Push(_ref, data) {
 	return DB.ref(_ref).push(data);
 }
 
-export { DB, LiveGet, Get, Set, Push, Update, Remove };
+export { LiveGet, Get, Set, Push, Update, Remove };
 
 async function isLoggedIn() {
 	const ID = localStorage.getItem("user");
@@ -98,7 +101,11 @@ const message_schema = {
 	message: "",
 	author: "",
 	timestamp: 0, // Date.now()
-	file: "", // null | file link (Firebase Storage)
+	file: {
+		url: "", // null | file link (Firebase Storage)
+		height: 0, // 0 | height of the image
+		width: 0, // 0 | width of the image
+	},
 };
 
 export { message_schema, chat_schema, post_schema, accounts_schema };
