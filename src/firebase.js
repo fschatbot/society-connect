@@ -25,7 +25,7 @@ const DB = firebase.database(app);
 const storage = firebase.storage(app);
 const storageRef = storage.ref();
 
-export { DB, storage, storageRef };
+export { DB, storageRef };
 
 function LiveGet(_ref, func) {
 	return DB.ref(_ref).on("value", func);

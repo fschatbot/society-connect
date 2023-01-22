@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { accounts_schema, Get, LiveGet, message_schema, Push, Set, storage, storageRef } from "../../firebase";
+import { accounts_schema, Get, LiveGet, message_schema, Push, Set, storageRef } from "../../firebase";
 import "../../styles/chatPage.css";
 import { Icon } from "@iconify/react";
 
@@ -50,7 +50,7 @@ function ChatPage() {
 			});
 			Promise.all(messages).then(setMessages);
 		});
-	}, [participant]);
+	}, [participant, chatLocation]);
 
 	// Sending the messages
 	const sendMessage = async () => {
