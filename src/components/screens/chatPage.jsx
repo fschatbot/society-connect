@@ -64,7 +64,12 @@ function ChatPage() {
 		data.author = localStorage.user;
 		data.timestamp = firebase.database.ServerValue.TIMESTAMP;
 		// Set a shiny gray file url temporarily
-		if (currFile.url) data.file = { url: `https://singlecolorimage.com/get/33fd8f/${currFile.width}x${currFile.height}`, height: currFile.height, width: currFile.width };
+		if (currFile.url)
+			data.file = {
+				url: `https://singlecolorimage.com/get/4ade80/${currFile.width}x${currFile.height}`,
+				height: currFile.height,
+				width: currFile.width,
+			};
 
 		Push(chatLocation, data).then((snap) => {
 			setCurrMessage("");
@@ -159,10 +164,13 @@ function Message({ message, preview }) {
 		minute: "numeric",
 		hour12: true,
 	});
+	const containerClass = `messageBox ${message.author === localStorage.user ? "self" : "other"} ${preview ? "preview" : ""}`;
+	const { url, height, width } = message.file;
+	const img_style = { "--url": `url("${url}")`, "--ratio": `${(height / width) * 100}%` };
 
 	return (
-		<div key={message.id} className={`messageBox ${message.author === localStorage.user ? "self" : "other"} ${preview ? "preview" : ""}`}>
-			{message.file.url && <div className="img" style={{ "--url": `url("${message.file.url}")`, "--ratio": `${(message.file.height / message.file.width) * 100}%` }} />}
+		<div key={message.id} className={containerClass}>
+			{message.file.url && <div className="img" style={img_style} />}
 			{message.message && <p>{message.message}</p>}
 			<span className="timestamp">{time}</span>
 		</div>

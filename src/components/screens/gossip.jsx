@@ -112,8 +112,8 @@ function PostScroll({ filter = () => !0 }) {
 			.limitToFirst(posts.length + 10)
 			.once("value")
 			.then((snap) => {
+				// Get the posts and their authors PFPs
 				let data = [];
-				const previousLength = posts.length;
 				snap.forEach((snapChild) => {
 					let post = snapChild.val();
 					if (!filter(post)) return;
@@ -126,13 +126,15 @@ function PostScroll({ filter = () => !0 }) {
 						})
 					);
 				});
-				Promise.all(data).then((new_posts) => {
-					// Get the data returned from the promises
-					console.log(new_posts);
-					setPosts(new_posts);
-					if (previousLength === new_posts.length || new_posts.length % 10 !== 0) setHasMore(false);
-					setLoading(false);
-				});
+				return Promise.all(data);
+			})
+			.then((new_posts) => {
+				// Update the posts and hasMore state
+				console.log(new_posts);
+				const previousLength = posts.length;
+				setPosts(new_posts);
+				if (previousLength === new_posts.length || new_posts.length % 10 !== 0) setHasMore(false);
+				setLoading(false);
 			});
 	}
 
