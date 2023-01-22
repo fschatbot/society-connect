@@ -92,11 +92,6 @@ const post_schema = {
 	image: "", // URL to the image
 };
 
-const chat_schema = {
-	messages: [], // Message schema here
-	participants: [], // ID list
-};
-
 const message_schema = {
 	message: "",
 	author: "",
@@ -108,4 +103,4 @@ const message_schema = {
 	},
 };
 
-export { message_schema, chat_schema, post_schema, accounts_schema };
+export { message_schema, post_schema, accounts_schema };
