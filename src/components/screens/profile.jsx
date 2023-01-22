@@ -39,7 +39,7 @@ function Profile(props) {
 				</CopyToClipboard>
 				<div className="profile_img" style={{ "--pfp": `url("${info?.PFP}")` }}></div>
 				<div className="profile_icon right-5 bottom-0 translate-y-1/2">
-					<Icon icon="fluent:edit-28-regular" />
+					<Icon icon={localStorage.user === info?.id ? "fluent:edit-28-regular" : "ph:info-light"} />
 				</div>
 			</div>
 
