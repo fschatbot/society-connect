@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { accounts_schema, Get, LiveGet, message_schema, Push, Set, storageRef } from "../../firebase";
 import "../../styles/chatPage.css";
+import firebase from "firebase/app";
 import { Icon } from "@iconify/react";
 
 function ChatPage() {
@@ -18,6 +19,7 @@ function ChatPage() {
 	const [file, setFile] = useState(null);
 	const { id: participant } = useParams();
 	const navigate = useNavigate();
+	// TODO: Change this to introduce the /society and /building routes
 	let participants = [localStorage.user, participant].sort();
 	const chatLocation = `messages/${participants[0]}|${participants[1]}`;
 
@@ -60,9 +62,9 @@ function ChatPage() {
 		let data = message_schema;
 		data.message = currMessage;
 		data.author = localStorage.user;
-		data.timestamp = Date.now();
+		data.timestamp = firebase.database.ServerValue.TIMESTAMP;
 		// Set a shiny gray file url temporarily
-		if (currFile.url) data.file = { url: "https://singlecolorimage.com/get/33fd8f/1600x900", height: 900, width: 1600 };
+		if (currFile.url) data.file = { url: `https://singlecolorimage.com/get/33fd8f/${currFile.width}x${currFile.height}`, height: currFile.height, width: currFile.width };
 
 		Push(chatLocation, data).then((snap) => {
 			setCurrMessage("");
@@ -75,11 +77,7 @@ function ChatPage() {
 					console.log("File Uploaded to the server!");
 					imageRef.getDownloadURL().then((url) => {
 						console.log("File url obtained!");
-						Set(`${chatLocation}/${snap.key}/file`, {
-							url: url,
-							height: currFile.height,
-							width: currFile.width,
-						});
+						Set(`${chatLocation}/${snap.key}/file/url`, url);
 					});
 				});
 			}
