@@ -8,7 +8,7 @@ function Navbar() {
 	let navClass = ({ isActive }) => (isActive ? "active" : null);
 	const [PFP, setPFP] = useState("https://i.pravatar.cc/150?img=29");
 	useEffect(() => {
-		Get(`accounts/${localStorage.user}/PFP`).then(setPFP);
+		Get(`accounts/${localStorage.user}/PFP`).then((snap) => setPFP(snap.val()));
 	}, []);
 	return (
 		<nav>
