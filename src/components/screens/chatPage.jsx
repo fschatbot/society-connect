@@ -74,17 +74,22 @@ function ChatPage() {
 		Push(chatLocation, data).then((snap) => {
 			setCurrMessage("");
 			setCurrFile({});
+			setFile(null);
 
 			if (currFile.url) {
-				console.log("Uploading to the server...");
+				console.debug("Uploading to the server...");
 				const imageRef = storageRef.child(`${participants[0]}|${participants[1]}/${snap.key}`);
-				imageRef.put(file).then(() => {
-					console.log("File Uploaded to the server!");
-					imageRef.getDownloadURL().then((url) => {
-						console.log("File url obtained!");
-						Set(`${chatLocation}/${snap.key}/file/url`, url);
-					});
-				});
+				imageRef
+					.put(file)
+					.then(() => {
+						console.debug("File Uploaded to the server!");
+						return imageRef.getDownloadURL();
+					})
+					.then((url) => {
+						console.debug("File url obtained!");
+						return Set(`${chatLocation}/${snap.key}/file/url`, url);
+					})
+					.then(() => console.debug("DataBase Updated"));
 			}
 		});
 	};
