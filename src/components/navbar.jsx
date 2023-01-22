@@ -2,13 +2,13 @@ import "../styles/navbar.css";
 import { Icon } from "@iconify/react";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { currentAccount } from "../firebase";
+import { Get } from "../firebase";
 
 function Navbar() {
 	let navClass = ({ isActive }) => (isActive ? "active" : null);
 	const [PFP, setPFP] = useState("https://i.pravatar.cc/150?img=29");
 	useEffect(() => {
-		currentAccount().then((acc) => setPFP(acc.PFP));
+		Get(`accounts/${localStorage.user}/PFP`).then(setPFP);
 	}, []);
 	return (
 		<nav>
