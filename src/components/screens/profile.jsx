@@ -15,12 +15,12 @@ function Profile(props) {
 	useEffect(() => {
 		Get(`accounts/${id || localStorage.user}`)
 			.then((snapshot) => {
-				let url = window.location.origin + window.location.pathname + `#/profile/${snapshot.key}`;
-				shareUrlRef.current(url);
 				if (snapshot.exists()) return snapshot;
 				return currentAccount();
 			})
 			.then((snapshot) => {
+				let url = window.location.origin + window.location.pathname + `#/profile/${snapshot.key}`;
+				shareUrlRef.current(url);
 				const data = snapshot.val();
 				data.id = snapshot.key;
 				setInfo(data);
