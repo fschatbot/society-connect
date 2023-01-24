@@ -131,9 +131,8 @@ function PostScroll({ filter = () => !0 }) {
 			.then((new_posts) => {
 				// Update the posts and hasMore state
 				console.log(new_posts);
-				const previousLength = posts.length;
+				if (posts.length === new_posts.length || new_posts.length % 10 !== 0) setHasMore(false);
 				setPosts(new_posts);
-				if (previousLength === new_posts.length || new_posts.length % 10 !== 0) setHasMore(false);
 				setLoading(false);
 			});
 	}
