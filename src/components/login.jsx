@@ -43,7 +43,7 @@ function Login() {
 	return (
 		<div className="login_page" style={{ height: "100%" }}>
 			<div className="formBox">
-				<img src={process.env.PUBLIC_URL + "/logo.png"} className="h-20" alt="Page Logo" />
+				<img src={process.env.PUBLIC_URL + (window.matchMedia("(prefers-color-scheme: dark)").matches ? "/logoDark.png" : "/logo.png")} className="h-20" alt="Page Logo" />
 				<h1 className="text-4xl font-bold">Society Connect</h1>
 				<div className="inputContainer">
 					<div className="inputWrapper">
