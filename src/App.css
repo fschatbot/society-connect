@@ -2,3 +2,7 @@
 	@apply flex-grow w-full overflow-y-auto
 	flex flex-col;
 }
+
+.loadingScreen {
+	@apply flex items-center justify-center h-screen w-screen;
+}
