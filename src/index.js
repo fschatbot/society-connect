@@ -4,10 +4,6 @@ import { HashRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
-// Debugging purposes
-import * as fireDB from "./firebase";
-window.fireDB = fireDB;
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
