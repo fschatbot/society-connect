@@ -24,6 +24,8 @@ const app = firebase.initializeApp(firebaseConfig);
 const DB = firebase.database(app);
 const storage = firebase.storage(app);
 const storageRef = storage.ref();
+const appCheck = firebase.appCheck();
+appCheck.activate("6LfG7UMkAAAAALPNSbhBLVhdvciBHT_tOwclnqNZ", true);
 
 export { DB, storageRef };
 
