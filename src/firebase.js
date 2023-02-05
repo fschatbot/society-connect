@@ -2,7 +2,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/storage";
-import "firebase/app-check";
+// import "firebase/app-check";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,8 +25,8 @@ const app = firebase.initializeApp(firebaseConfig);
 const DB = firebase.database(app);
 const storage = firebase.storage(app);
 const storageRef = storage.ref();
-const appCheck = firebase.appCheck();
-appCheck.activate("6LfG7UMkAAAAALPNSbhBLVhdvciBHT_tOwclnqNZ", true);
+// const appCheck = firebase.appCheck();
+// appCheck.activate("6LfG7UMkAAAAALPNSbhBLVhdvciBHT_tOwclnqNZ", true);
 
 export { DB, storageRef };
 
