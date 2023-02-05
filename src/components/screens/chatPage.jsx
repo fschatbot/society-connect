@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { accounts_schema, Get, LiveGet, message_schema, Push, Set, storageRef } from "../../firebase";
 import "../../styles/chatPage.css";
@@ -18,7 +18,6 @@ function ChatPage() {
 	});
 	const [file, setFile] = useState(null);
 	const { id: participant } = useParams();
-	const navigate = useNavigate();
 	// TODO: Change this to introduce the /society and /building routes
 	let participants = [localStorage.user, participant].sort();
 	const chatLocation = `messages/${participants[0]}|${participants[1]}`;
@@ -126,13 +125,7 @@ function ChatPage() {
 
 	return (
 		<div className="chatPage">
-			<nav>
-				<Icon icon="material-symbols:arrow-back-ios-new-rounded" onClick={() => navigate(-1)} />
-				<div className="account">
-					<div className="PFP" style={{ "--pfp": `url(${account.PFP})` }}></div>
-					<h1>{account.username}</h1>
-				</div>
-			</nav>
+			<ChatNav account={account} />
 			<div className="messages">
 				{newChat && <h1 className="firstMessageHeader">Send the first message!! 😊</h1>}
 
@@ -155,7 +148,7 @@ function ChatPage() {
 	);
 }
 
-function Message({ message, preview }) {
+const Message = memo(({ message, preview }) => {
 	let time = new Date(message.timestamp).toLocaleTimeString("en-US", {
 		hour: "numeric",
 		minute: "numeric",
@@ -172,6 +165,19 @@ function Message({ message, preview }) {
 			<span className="timestamp">{time}</span>
 		</div>
 	);
-}
+});
+
+const ChatNav = memo(({ account }) => {
+	const navigate = useNavigate();
+	return (
+		<nav>
+			<Icon icon="material-symbols:arrow-back-ios-new-rounded" onClick={() => navigate(-1)} />
+			<div className="account">
+				<div className="PFP" style={{ "--pfp": `url(${account.PFP})` }}></div>
+				<h1>{account.username}</h1>
+			</div>
+		</nav>
+	);
+});
 
 export default ChatPage;
