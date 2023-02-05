@@ -148,15 +148,11 @@ function PostScroll({ filter = () => !0 }) {
 						<h1>{post.title}</h1>
 					</Link>
 					<div className="reactions">
-						<Icon
-							icon={reactions.liked.includes(post.id) ? "ph:heart-fill" : "ph:heart"}
-							color={reactions.liked.includes(post.id) ? "rgb(229 66 148)" : "rgb(48 48 191)"}
-							onClick={() => likePost(post.id)}
-						/>
+						<Icon icon={reactions.liked.includes(post.id) ? "ph:heart-fill" : "ph:heart"} color={reactions.liked.includes(post.id) ? "rgb(229 66 148)" : "#fb923c"} onClick={() => likePost(post.id)} />
 						{post.liked}
 						<Icon
 							icon={reactions.disliked.includes(post.id) ? "fluent:thumb-dislike-16-filled" : "fluent:thumb-dislike-16-regular"}
-							color={reactions.disliked.includes(post.id) ? "#98571b" : "rgb(48 48 191)"}
+							color={reactions.disliked.includes(post.id) ? "#98571b" : "#fb923c"}
 							onClick={() => dislikePost(post.id)}
 						/>
 						{post.disliked}

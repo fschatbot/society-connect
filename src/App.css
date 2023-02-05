@@ -1,6 +1,6 @@
 .page {
 	@apply flex-grow w-full overflow-y-auto
-	flex flex-col;
+	flex flex-col dark:bg-slate-800 dark:text-slate-300;
 }
 
 .loadingScreen {

@@ -1,5 +1,6 @@
 .chatPage {
-	@apply flex flex-col h-screen;
+	@apply flex flex-col h-screen
+	dark:bg-slate-800 dark:text-slate-300;
 	nav {
 		@apply flex flex-row gap-4 items-center
 		border-b px-4 py-2;
@@ -46,10 +47,11 @@
 			}
 		}
 		.messageBox.self {
-			@apply bg-green-500 ml-auto;
+			@apply bg-orange-500 dark:bg-orange-400
+			ml-auto;
 		}
 		.messageBox.other {
-			@apply bg-gray-500;
+			@apply bg-gray-500 dark:bg-gray-600;
 		}
 
 		.messageBox.preview::after {
@@ -62,7 +64,7 @@
 		@apply border-t px-4 py-2
 		flex flex-row gap-2;
 		input {
-			@apply rounded-full border flex-grow px-4 py-1;
+			@apply rounded-full border flex-grow px-4 py-1 bg-transparent;
 		}
 		button {
 			@apply w-8 h-8 aspect-square rounded-2xl text-white
@@ -73,7 +75,8 @@
 			}
 		}
 		.addFile {
-			@apply border border-gray-500 text-gray-500;
+			@apply border border-gray-500 text-gray-500
+			dark:border-gray-200 dark:text-gray-200;
 		}
 		.send {
 			@apply bg-green-500;
