@@ -15,7 +15,7 @@
   },
   "scripts": {
     "postinstall": "node script.js",
-    "start": "set PORT=3006 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
