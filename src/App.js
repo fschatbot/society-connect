@@ -48,6 +48,7 @@ function App() {
 						</PageWrapper>
 					}
 				/>
+				<Route path="/logout" element={<Logout />} />
 				<Route path="*" element={<Navigate to="/login" replace />} />
 			</Routes>
 		</Suspense>
@@ -68,6 +69,11 @@ const PageWrapper = (props) => {
 			<Navbar />
 		</>
 	);
+};
+
+const Logout = () => {
+	localStorage.removeItem("user");
+	return <Navigate to="/login" replace />;
 };
 
 export default App;
