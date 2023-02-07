@@ -24,11 +24,19 @@ function ChatPage() {
 
 	// Fetching participant's data
 	useEffect(() => {
-		Get(`accounts/${participant}`).then((snap) => {
-			const account = snap.val();
-			account.id = snap.key;
-			setAccount(account);
-		});
+		const capitalizeFirstAlphabet = (string) => string.substring(0, 1).toUpperCase() + string.substring(1);
+		
+		if (participant !== "society" && participant !== "building")
+			Get(`accounts/${participant}`).then((snap) => {
+				const account = snap.val();
+				account.id = snap.key;
+				setAccount(account);
+			});
+		else
+			setAccount({
+				username: capitalizeFirstAlphabet(participant),
+				PFP: "https://media.istockphoto.com/id/935695192/vector/office-building-outline-icon-pixel-perfect.jpg?s=170667a&w=0&k=20&c=A3-wNyF3DOdmRYYb_FI-4mY3jCog0jI0Mb6ijLFU7YY=",
+			});
 	}, [participant]);
 
 	// Fetching messages
