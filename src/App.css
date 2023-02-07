@@ -4,7 +4,7 @@
 }
 
 .loadingScreen {
-	@apply flex items-center justify-center h-screen w-screen;
+	@apply flex items-center justify-center h-screen w-screen dark:bg-slate-800;
 }
 
 /* Thanks to https://stackoverflow.com/a/69364368/13703806 */
