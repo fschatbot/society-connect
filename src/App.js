@@ -15,43 +15,36 @@ const ChatPage = lazy(() => import("./components/screens/chatPage"));
 
 function App() {
 	return (
-		<Suspense
-			fallback={
-				<div className="loadingScreen">
-					<HashLoader color="#36d7b7" />
-				</div>
-			}>
-			<Routes>
-				<Route path="/login" element={<Login />} />
-				<Route
-					path="/gossip"
-					element={
-						<PageWrapper>
-							<Gossip />
-						</PageWrapper>
-					}
-				/>
-				<Route path="/chat/:id" element={<ChatPage />} />
-				<Route
-					path="/chat"
-					element={
-						<PageWrapper>
-							<Chat />
-						</PageWrapper>
-					}
-				/>
-				<Route
-					path="/profile/:id?"
-					element={
-						<PageWrapper>
-							<Profile />
-						</PageWrapper>
-					}
-				/>
-				<Route path="/logout" element={<Logout />} />
-				<Route path="*" element={<Navigate to="/login" replace />} />
-			</Routes>
-		</Suspense>
+		<Routes>
+			<Route path="/login" element={<Login />} />
+			<Route
+				path="/gossip"
+				element={
+					<PageWrapper>
+						<Gossip />
+					</PageWrapper>
+				}
+			/>
+			<Route path="/chat/:id" element={<ChatPage />} />
+			<Route
+				path="/chat"
+				element={
+					<PageWrapper>
+						<Chat />
+					</PageWrapper>
+				}
+			/>
+			<Route
+				path="/profile/:id?"
+				element={
+					<PageWrapper>
+						<Profile />
+					</PageWrapper>
+				}
+			/>
+			<Route path="/logout" element={<Logout />} />
+			<Route path="*" element={<Navigate to="/login" replace />} />
+		</Routes>
 	);
 }
 
@@ -65,7 +58,14 @@ const PageWrapper = (props) => {
 
 	return (
 		<>
-			<div className="page">{props.children}</div>
+			<Suspense
+				fallback={
+					<div className="loadingScreen">
+						<HashLoader color="#36d7b7" />
+					</div>
+				}>
+				<div className="page">{props.children}</div>
+			</Suspense>
 			<Navbar />
 		</>
 	);
