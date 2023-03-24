@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/society-connect/static/css/main.5ebbfa36.css",
+    "main.js": "/society-connect/static/js/main.05d75cd5.js",
+    "static/css/608.281c4916.chunk.css": "/society-connect/static/css/608.281c4916.chunk.css",
+    "static/js/608.3f73eb86.chunk.js": "/society-connect/static/js/608.3f73eb86.chunk.js",
+    "static/css/416.d4191edf.chunk.css": "/society-connect/static/css/416.d4191edf.chunk.css",
+    "static/js/416.0e0e90f9.chunk.js": "/society-connect/static/js/416.0e0e90f9.chunk.js",
+    "static/css/226.5a5bd81d.chunk.css": "/society-connect/static/css/226.5a5bd81d.chunk.css",
+    "static/js/226.aaf8e650.chunk.js": "/society-connect/static/js/226.aaf8e650.chunk.js",
+    "static/css/360.ed9937f5.chunk.css": "/society-connect/static/css/360.ed9937f5.chunk.css",
+    "static/js/360.f1892279.chunk.js": "/society-connect/static/js/360.f1892279.chunk.js",
+    "static/css/138.2b60d0fb.chunk.css": "/society-connect/static/css/138.2b60d0fb.chunk.css",
+    "static/js/138.82e216bb.chunk.js": "/society-connect/static/js/138.82e216bb.chunk.js",
+    "index.html": "/society-connect/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.5ebbfa36.css",
+    "static/js/main.05d75cd5.js"
+  ]
+}
